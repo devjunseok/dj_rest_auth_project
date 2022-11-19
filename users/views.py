@@ -44,3 +44,5 @@ class ProfileView(APIView):  # 회원정보 조회
         user = get_object_or_404(User, id=user_id)
         serializer = UserProfileSerializer(user)  
         return Response(serializer.data)
+    
+#test
