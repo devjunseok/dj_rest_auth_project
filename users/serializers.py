@@ -3,6 +3,14 @@ from users.models import User
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
 
+
+
+class UserProfileSerializer(serializers.ModelSerializer):  # 프로필 조회
+
+    class Meta:
+        model = User
+        fields=("id", "email", "nickname")
+
 class customRegistrationSerializer(RegisterSerializer):  # dj-rest-auth 회원가입 시리얼라이저
     
     nickname = serializers.CharField(max_length=20)

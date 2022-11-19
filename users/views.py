@@ -7,6 +7,7 @@ from django.http import HttpResponseRedirect
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
+from users.serializers import UserProfileSerializer
 
 
 class ConfirmEmailView(APIView): # 이메일 인증
@@ -36,3 +37,10 @@ class ConfirmEmailView(APIView): # 이메일 인증
         qs = EmailConfirmation.objects.all_valid()
         qs = qs.select_related("email_address__user")
         return qs
+
+
+class ProfileView(APIView):  # 회원정보 조회
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserProfileSerializer(user)  
+        return Response(serializer.data)
