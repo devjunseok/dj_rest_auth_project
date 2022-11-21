@@ -5,6 +5,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 
 
 
+
 class UserProfileSerializer(serializers.ModelSerializer):  # 프로필 조회
 
     class Meta:
@@ -20,3 +21,19 @@ class customRegistrationSerializer(RegisterSerializer):  # dj-rest-auth 회원�
         data['nickname'] = self.validated_data.get('nickname', '')
 
         return data
+
+class UserUpdateSerializer(serializers.ModelSerializer):  # 프로필 조회
+    class Meta:
+        model = User
+        fields=("nickname", "password")
+        
+    def update(self, instance, validated_data): # 비밀번호 수정 
+        for key, value in validated_data.items():
+            if key == "password":
+                instance.set_password(value)
+                continue
+            setattr(instance, key, value)
+            
+        instance.save()
+        
+        return instance
